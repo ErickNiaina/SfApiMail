@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Export Excel{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <div class="col-md-6">
+        <h2><center>EXPORTATION EXCEL :</center></h2>
+        <div class="row">
+            <a href="{{path('export')}}" class="btn btn-success">Export Static</a>
+            <a href="{{path('user_list')}}" class="btn btn-warning">User</a>
+        </div>
+        <div class="row">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>The Bird</td>
+                        <td>@Twitter</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <a href="{{path('contact')}}" class="btn btn-primary">Contact</a>
+    </div>
+</div>
+{% endblock %}

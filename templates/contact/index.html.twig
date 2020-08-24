@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="col-md-5">
+            {% for message in app.flashes('message') %}
+            <div class="alert alert-success" role="alert">
+                {{message}}
+            </div>
+            {% endfor %}
+            <h1>Nous Contacter</h1>
+            {{ form(contactForm) }}
+            <a href="{{path('excel')}}" class="btn btn-danger">Excel</a>
+            <a href="{{path('user_list')}}" class="btn btn-warning">User</a>
+        </div>
+    </div>
+{% endblock %}
