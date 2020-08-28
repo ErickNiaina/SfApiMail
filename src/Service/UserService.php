@@ -41,9 +41,9 @@ class UserService
                 $n = 1;
                 foreach ($userList as $key => $user) {
                     $sheet->setCellValue("A$n",$user->getId());
-                    $sheet->setCellValue("B$n",$user->getFirstname());
-                    $sheet->setCellValue("C$n",$user->getLastname());
-                    $sheet->setCellValue("D$n",$user->getHandle());
+                    $sheet->setCellValue("B$n",$user->getLogin());
+                    $sheet->setCellValue("C$n",$user->getPassword());
+                    $sheet->setCellValue("D$n",$user->getRoles());
                 $n++;
                 }
             }

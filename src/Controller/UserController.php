@@ -2,28 +2,140 @@
 
 namespace App\Controller;
 
-use App\Service\UserService;
+use App\Entity\User;
+use App\Form\UserType;
+use App\Repository\UserRepository;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class UserController extends AbstractController
+
+class UserController extends AbstractFOSRestController
 {
     /**
-     * @Route("/user", name="User")
+     * @Rest\Get(
+     * path = "/user",
+     * name = "liste_users")
      */
-    public function index()
+    public function cgetUserAction(UserRepository $userRepository)
     {
+        $users = $userRepository->findAll();
 
-        return new JsonResponse(['hearts' => rand(5, 100)]);
+        return $this->view(['data' => $users], 200);
+    }
+
+    /**
+     * @Rest\Post(
+     * path = "/user",
+     * name = "add_user")
+     */
+    public function postUserAction(Request $request,ValidatorInterface $validator)
+    {
+        $user = new User();
+        $body = $request->getContent();
+        $data = json_decode($body, true);
+        $form = $this->createForm(UserType::class, $user);
+        $form->submit($data);
+        
+        $errors = $validator->validate($user);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            return new JsonResponse($errorsString);
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('liste_users');
+    }
+
+    /**
+     * @Rest\Get(
+     * path = "/user/{id}",
+     * name = "show_user")
+     */
+    public function getUserAction(User $user)
+    {
+        return $this->view(['data' => $user], 200);
+    }
+
+    /**
+     * @Rest\Put(
+     * path = "/user/{id}",
+     * name = "get_user")
+     */
+    public function putUserAction(Request $request,User $user,ValidatorInterface $validator)
+    {
+        $body = $request->getContent();
+        $data = json_decode($body, true);
+        $form = $this->createForm(UserType::class, $user);
+        $form->submit($data);
+        
+        $errors = $validator->validate($user);
+
+        if (count($errors) > 0) {
+            $errorsString = (string) $errors;
+
+            return new JsonResponse($errorsString);
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        return $this->view(['data' => $user], 200);
+    }
+
+    /**
+     * @Rest\Delete(
+     * path = "/user/{id}",
+     * name = "remove_remove")
+     */
+    public function deleteUserAction(Request $request, User $user)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($user);
+        $em->flush();
+
+        return $this->redirectToRoute('liste_users');
     }
 
 
     /**
-     * @Route("/userapi", name="apilistUser")
+     * @Rest\Post(
+     * path = "login",
+     * name = "log_user")
      */
-    public function apiUserList(UserService $user){
-        $users = $user->listUser();
-        return $this->json($users);
+    public function postLoginUserAction(Request $request, UserRepository $userRepository)
+    {
+        $data = json_decode($request->getContent(), true) ?: [];
+        $user = $userRepository->findOneByEmail($data['email']);
+
+        $token = $this->get('lexik_jwt_authentication.encoder')
+                                  ->encode(['email' => $data['email']]);
+
+        // if (!$user) {
+        //     throw new ApiException(
+        //         'The given data is invalid',
+        //         ['login' => ['Le nom de cet utilisateur est introuvable.']],
+        //         Response::HTTP_UNPROCESSABLE_ENTITY
+        //     );
+        // }
+
+        // $isValid = $this->container->get('security.password_encoder')->isPasswordValid($account, $data['password']);
+        // if (!$isValid) {
+        //     throw new ApiException(
+        //         'The given data is invalid',
+        //         ['login/password' => ['Le mot de passe est incorrect.']],
+        //         Response::HTTP_UNPROCESSABLE_ENTITY
+        //     );
+        // }
+
+        return $this->view(['data' => ['token' => $token, 'user' => $user]], 200);
     }
 }

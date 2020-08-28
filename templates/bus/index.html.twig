@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bus index{% endblock %}
+
+{% block body %}
+    <h1>Bus index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Plank</th>
+                <th>BusStop</th>
+                <th>Color</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for bus in buses %}
+            <tr>
+                <td>{{ bus.id }}</td>
+                <td>{{ bus.plank }}</td>
+                <td>{{ bus.busStop }}</td>
+                <td>{{ bus.color }}</td>
+                <td>
+                    <a href="{{ path('bus_show', {'id': bus.id}) }}">show</a>
+                    <a href="{{ path('bus_edit', {'id': bus.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('bus_new') }}">Create new</a>
+{% endblock %}

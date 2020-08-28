@@ -101,11 +101,41 @@
     "fig/link-util": {
         "version": "1.1.1"
     },
+    "friendsofsymfony/rest-bundle": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "cad41ef93d6150067ae2bb3c7fd729492dff6f0a"
+        },
+        "files": [
+            "config/packages/fos_rest.yaml"
+        ]
+    },
+    "lcobucci/jwt": {
+        "version": "3.3.3"
+    },
+    "lexik/jwt-authentication-bundle": {
+        "version": "2.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.5",
+            "ref": "5b2157bcd5778166a5696e42f552ad36529a07a6"
+        },
+        "files": [
+            "config/packages/lexik_jwt_authentication.yaml"
+        ]
+    },
     "markbaker/complex": {
         "version": "1.4.8"
     },
     "markbaker/matrix": {
         "version": "1.2.0"
+    },
+    "namshi/jose": {
+        "version": "7.2.3"
     },
     "nelmio/cors-bundle": {
         "version": "1.5",
@@ -390,6 +420,9 @@
             "config/packages/test/swiftmailer.yaml"
         ]
     },
+    "symfony/templating": {
+        "version": "v4.4.11"
+    },
     "symfony/translation-contracts": {
         "version": "v1.1.7"
     },
@@ -463,6 +496,9 @@
     },
     "webmozart/assert": {
         "version": "1.9.0"
+    },
+    "willdurand/jsonp-callback-validator": {
+        "version": "v1.1.0"
     },
     "willdurand/negotiation": {
         "version": "v2.3.1"

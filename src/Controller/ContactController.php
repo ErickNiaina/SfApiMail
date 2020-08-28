@@ -42,15 +42,6 @@ class ContactController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/list/user", name="user_list")
-     */
-    public function userList(UserService $userService)
-    {
-        $list = $userService->listUser();
-
-        return $this->render('user/list.html.twig',compact('list'));
-    }
 
     /**
      * @Route("/d/export", name="d_export")
