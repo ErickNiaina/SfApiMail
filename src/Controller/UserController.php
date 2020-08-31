@@ -11,6 +11,7 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 
 class UserController extends AbstractFOSRestController
@@ -108,17 +109,18 @@ class UserController extends AbstractFOSRestController
 
     /**
      * @Rest\Post(
-     * path = "login",
+     * path = "/api/login",
      * name = "log_user")
      */
-    public function postLoginUserAction(Request $request, UserRepository $userRepository)
+    public function postLoginUserAction(Request $request, UserRepository $userRepository,JWTEncoderInterface $JWTEncoder)
     {
         $data = json_decode($request->getContent(), true) ?: [];
         $user = $userRepository->findOneByEmail($data['email']);
 
-        $token = $this->get('lexik_jwt_authentication.encoder')
-                                  ->encode(['email' => $data['email']]);
-
+        $token = $JWTEncoder->encode(['email' => $data['email']]);
+        // $token = $this->get('lexik_jwt_authentication.encoder');
+                                   //->encode(['email' => $data['email']]);
+var_dump($token);die;
         // if (!$user) {
         //     throw new ApiException(
         //         'The given data is invalid',
@@ -136,6 +138,6 @@ class UserController extends AbstractFOSRestController
         //     );
         // }
 
-        return $this->view(['data' => ['token' => $token, 'user' => $user]], 200);
+        //return $this->view(['data' => ['token' => $token, 'user' => $user]], 200);
     }
 }
