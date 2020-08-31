@@ -118,26 +118,7 @@ class UserController extends AbstractFOSRestController
         $user = $userRepository->findOneByEmail($data['email']);
 
         $token = $JWTEncoder->encode(['email' => $data['email']]);
-        // $token = $this->get('lexik_jwt_authentication.encoder');
-                                   //->encode(['email' => $data['email']]);
-var_dump($token);die;
-        // if (!$user) {
-        //     throw new ApiException(
-        //         'The given data is invalid',
-        //         ['login' => ['Le nom de cet utilisateur est introuvable.']],
-        //         Response::HTTP_UNPROCESSABLE_ENTITY
-        //     );
-        // }
 
-        // $isValid = $this->container->get('security.password_encoder')->isPasswordValid($account, $data['password']);
-        // if (!$isValid) {
-        //     throw new ApiException(
-        //         'The given data is invalid',
-        //         ['login/password' => ['Le mot de passe est incorrect.']],
-        //         Response::HTTP_UNPROCESSABLE_ENTITY
-        //     );
-        // }
-
-        //return $this->view(['data' => ['token' => $token, 'user' => $user]], 200);
+        return $this->view(['data' => ['token' => $token, 'user' => $user]], 200);
     }
 }
